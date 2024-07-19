@@ -8,7 +8,7 @@ import com.lab.cli.CommonExecutor;
 public class Main {
     public static void main(String[] args) {
         // args = new String[]{"generator", "-l", "-a", "-o"};
-        args = new String[]{"list"};
+        // args = new String[]{"list"};
         new CommonExecutor().doExecutor(args);
     }
 }
