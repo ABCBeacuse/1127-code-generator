@@ -8,6 +8,7 @@ import freemarker.template.TemplateException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 /**
  * 结合 FreeMarker 的 动态代码生成
@@ -42,8 +43,11 @@ public class DynamicGenerator {
         String templateName = new File(templatePath).getName();
         Template template = configuration.getTemplate(templateName);
         // 将 model 数据 和 template 模板结合, 生成代码 到 指定目录
-        FileWriter target = new FileWriter(outputFilePath);
+        Writer target = new FileWriter(outputFilePath);
         template.process(dataModel, target);
+
+        // 关闭文件
+        target.close();
     }
 
 }
