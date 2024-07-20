@@ -1,13 +1,13 @@
-package com.lab.maker.cli;
+package ${basePackage}.maker.cli;
 
 
-import com.lab.maker.cli.command.ConfigCommand;
-import com.lab.maker.cli.command.GeneratorCommand;
-import com.lab.maker.cli.command.ListCommand;
+import ${basePackage}.maker.cli.command.ConfigCommand;
+import ${basePackage}.maker.cli.command.GeneratorCommand;
+import ${basePackage}.maker.cli.command.ListCommand;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
-@Command(name = "code_generator", version = {"code_generator v1.0"}, mixinStandardHelpOptions = true)
+@Command(name = "${name}", version = {"${version}"}, mixinStandardHelpOptions = true)
 public class CommonExecutor implements Runnable {
 
     private final CommandLine commandLine;

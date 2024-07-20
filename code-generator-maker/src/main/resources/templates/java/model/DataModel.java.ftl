@@ -1,4 +1,4 @@
-package com.lab.maker.model;
+package ${basePackage}.maker.model;
 
 import lombok.Data;
 

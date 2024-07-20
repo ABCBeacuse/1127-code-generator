@@ -14,7 +14,6 @@ import java.io.IOException;
 public class MainGenerator {
     public static void main(String[] args) throws TemplateException, IOException {
         Meta meta = MetaManager.getMetaInstance();
-        System.out.println(meta);
 
         /**
          * 将 DataModel.java 生成 到 code-generator-maker/generator/ 下对应的 package 下
@@ -26,12 +25,31 @@ public class MainGenerator {
             FileUtil.mkdir(generatorProjectPath);
         }
 
-        String dataModelTemplatePath = projectRoot + File.separator + "src/main/resources/templates/java/model/DataModel.java.ftl";
-
         String generatorBasePackage = StrUtil.join("/", StrUtil.split(meta.getBasePackage(), "."));
         String outputBaseJavaPackagePath = generatorProjectPath + File.separator + "src/main/java/" + generatorBasePackage;
-        String outputDataModelPath = outputBaseJavaPackagePath + "/model/DataModel.java";
 
+        String dataModelTemplatePath = projectRoot + File.separator + "src/main/resources/templates/java/model/DataModel.java.ftl";
+        String outputDataModelPath = outputBaseJavaPackagePath + "/model/DataModel.java";
         DynamicFileGenerator.doGenerator(dataModelTemplatePath, outputDataModelPath, meta);
+
+        String TemplatePath = projectRoot + File.separator + "src/main/resources/templates/java/cli/command/ConfigCommand.java.ftl";
+        String outputPath = outputBaseJavaPackagePath + "/cli/command/ConfigCommand.java";
+        DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
+
+        TemplatePath = projectRoot + File.separator + "src/main/resources/templates/java/cli/command/GeneratorCommand.java.ftl";
+        outputPath = outputBaseJavaPackagePath + "/cli/command/GeneratorCommand.java";
+        DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
+
+        TemplatePath = projectRoot + File.separator + "src/main/resources/templates/java/cli/command/ListCommand.java.ftl";
+        outputPath = outputBaseJavaPackagePath + "/cli/command/ListCommand.java";
+        DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
+
+        TemplatePath = projectRoot + File.separator + "src/main/resources/templates/java/cli/CommonExecutor.java.ftl";
+        outputPath = outputBaseJavaPackagePath + "/cli/CommonExecutor.java";
+        DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
+
+        TemplatePath = projectRoot + File.separator + "src/main/resources/templates/java/Main.java.ftl";
+        outputPath = outputBaseJavaPackagePath + "/Main.java";
+        DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
     }
 }

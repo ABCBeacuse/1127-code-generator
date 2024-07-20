@@ -2,7 +2,6 @@ package com.lab.maker.generator.file;
 
 import cn.hutool.core.io.FileUtil;
 import com.lab.maker.meta.Meta;
-import com.lab.maker.model.DataModel;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;

@@ -1,4 +1,4 @@
-package com.lab.maker.cli.command;
+package ${basePackage}.maker.cli.command;
 
 import cn.hutool.core.io.FileUtil;
 import picocli.CommandLine.Command;
@@ -14,7 +14,7 @@ public class ListCommand implements Runnable {
         // 查看项目路径
         String projectPath = System.getProperty("user.dir");
         // 生成的项目文件 目录
-        String targetPath = projectPath + File.separator + "acm-template";
+        String targetPath = projectPath + File.separator + ${fileConfig.inputRootPath};
         List<File> files = FileUtil.loopFiles(targetPath);
         for (File file : files) {
             System.out.println(file);
