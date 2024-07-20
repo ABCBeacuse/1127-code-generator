@@ -23,6 +23,6 @@ public class FileGenerator {
         // 2. 动态代码 生成, 使用生成的动态代码 去 覆盖 生成的静态代码 中的一些文件
         String dynamicOriginPath = projectPath + File.separator + "code-generator-basic/src/main/resources/templates/MainTemplate.java.ftl";
         String dynamicTargetPath = projectPath + File.separator + "acm-template/src/com/lab/acm/MainTemplate.java";
-        DynamicFileGenerator.doGenerator(dynamicOriginPath, dynamicTargetPath, (DataModel) model);
+        // DynamicFileGenerator.doGenerator(dynamicOriginPath, dynamicTargetPath, (DataModel) model);
     }
 }

@@ -1,6 +1,7 @@
 package com.lab.maker.generator.file;
 
 import cn.hutool.core.io.FileUtil;
+import com.lab.maker.meta.Meta;
 import com.lab.maker.model.DataModel;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -16,7 +17,7 @@ import java.io.Writer;
  */
 public class DynamicFileGenerator {
 
-    public static void doGenerator(String templatePath, String outputFilePath, DataModel dataModel) throws IOException, TemplateException {
+    public static void doGenerator(String templatePath, String outputFilePath, Meta dataModel) throws IOException, TemplateException {
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_32);
         configuration.setDefaultEncoding("UTF-8");
 

@@ -1,9 +1,9 @@
 {
   "name": "acm-template-pro-generator",
   "description": "ACM 示例模板生成器",
-  "basePackage": "com.yupi",
+  "basePackage": "com.lab",
   "version": "1.0",
-  "author": "yupi",
+  "author": "lab",
   "createTime": "2023-11-22",
   "fileConfig": {
     "inputRootPath": "/Users/yupi/Code/yuzi-generator/yuzi-generator-demo-projects/acm-template-pro",
@@ -36,21 +36,21 @@
         "fieldName": "loop",
         "type": "boolean",
         "description": "是否生成循环",
-        "defaultValue": false,
+        "defaultValue": true,
         "abbr": "l"
       },
       {
         "fieldName": "author",
         "type": "String",
         "description": "作者注释",
-        "defaultValue": "yupi",
+        "defaultValue": "1127 研究室",
         "abbr": "a"
       },
       {
         "fieldName": "outputText",
         "type": "String",
         "description": "输出信息",
-        "defaultValue": "sum = ",
+        "defaultValue": "自定义输出信息：",
         "abbr": "o"
       }
     ]
