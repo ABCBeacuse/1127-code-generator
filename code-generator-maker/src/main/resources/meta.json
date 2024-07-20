@@ -6,7 +6,7 @@
   "author": "lab",
   "createTime": "2023-11-22",
   "fileConfig": {
-    "inputRootPath": "code-generator-maker/generated/acm-template-pro",
+    "inputRootPath": "code-generator-maker/generated/acm-template-pro-generator",
     "outputRootPath": "generated",
     "type": "dir",
     "files": [

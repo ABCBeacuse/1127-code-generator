@@ -3,7 +3,6 @@ package com.lab.maker.generator;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.lab.maker.generator.file.DynamicFileGenerator;
-import com.lab.maker.generator.file.FileGenerator;
 import com.lab.maker.meta.Meta;
 import com.lab.maker.meta.MetaManager;
 import freemarker.template.TemplateException;
