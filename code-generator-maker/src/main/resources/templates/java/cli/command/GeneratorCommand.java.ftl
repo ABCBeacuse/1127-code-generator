@@ -1,8 +1,8 @@
-package ${basePackage}.maker.cli.command;
+package ${basePackage}.cli.command;
 
 import cn.hutool.core.bean.BeanUtil;
-import ${basePackage}.maker.generator.file.FileGenerator;
-import ${basePackage}.maker.model.DataModel;
+import ${basePackage}.generator.file.FileGenerator;
+import ${basePackage}.model.DataModel;
 import lombok.Data;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;

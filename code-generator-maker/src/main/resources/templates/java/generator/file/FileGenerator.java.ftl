@@ -1,6 +1,5 @@
-package ${basePackage}.maker.generator.file;
+package ${basePackage}.generator.file;
 
-import ${basePackage}.maker.model.DataModel;
 import freemarker.template.TemplateException;
 
 import java.io.File;
@@ -23,7 +22,7 @@ public class FileGenerator {
     <#if fileInfo.generateType == "static">
         StaticFileGenerator.copyFilesWithHutool(inputPath, outputPath);
     <#else>
-        DynamicFileGenerator.doGenerator(inputPath, outputPath, (DataModel) model);
+        DynamicFileGenerator.doGenerator(inputPath, outputPath, model);
     </#if>
 </#list>
     }

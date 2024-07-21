@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class MainGenerator {
-    public static void main(String[] args) throws TemplateException, IOException {
+    public static void main(String[] args) throws IOException, TemplateException, InterruptedException {
         Meta meta = MetaManager.getMetaInstance();
 
         /**
@@ -62,5 +62,12 @@ public class MainGenerator {
         TemplatePath = projectRoot + File.separator + "src/main/resources/templates/java/generator/file/StaticFileGenerator.java.ftl";
         outputPath = outputBaseJavaPackagePath + "/generator/file/StaticFileGenerator.java";
         DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
+
+        TemplatePath = projectRoot + File.separator + "src/main/resources/templates/pom.xml.ftl";
+        outputPath = generatorProjectPath + "/pom.xml";
+        DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
+
+        JarGenerator.doGenerator(new File(generatorProjectPath).getAbsolutePath());
+        ScriptGenerator.doGenerator(generatorProjectPath + File.separator + "generator", String.format("%s-%s-jar-with-dependencies.jar", meta.getName(), meta.getVersion()));
     }
 }
