@@ -50,5 +50,17 @@ public class MainGenerator {
         TemplatePath = projectRoot + File.separator + "src/main/resources/templates/java/Main.java.ftl";
         outputPath = outputBaseJavaPackagePath + "/Main.java";
         DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
+
+        TemplatePath = projectRoot + File.separator + "src/main/resources/templates/java/generator/file/DynamicFileGenerator.java.ftl";
+        outputPath = outputBaseJavaPackagePath + "/generator/file/DynamicFileGenerator.java";
+        DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
+
+        TemplatePath = projectRoot + File.separator + "src/main/resources/templates/java/generator/file/FileGenerator.java.ftl";
+        outputPath = outputBaseJavaPackagePath + "/generator/file/FileGenerator.java";
+        DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
+
+        TemplatePath = projectRoot + File.separator + "src/main/resources/templates/java/generator/file/StaticFileGenerator.java.ftl";
+        outputPath = outputBaseJavaPackagePath + "/generator/file/StaticFileGenerator.java";
+        DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
     }
 }
