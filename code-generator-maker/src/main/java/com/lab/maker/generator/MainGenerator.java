@@ -71,6 +71,10 @@ public class MainGenerator {
         outputPath = generatorProjectPath + "/pom.xml";
         DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
 
+        TemplatePath = projectRoot + File.separator + "src/main/resources/templates/README.md.ftl";
+        outputPath = generatorProjectPath + "/README.md";
+        DynamicFileGenerator.doGenerator(TemplatePath, outputPath, meta);
+
         JarGenerator.doGenerator(new File(generatorProjectPath).getAbsolutePath());
         ScriptGenerator.doGenerator(generatorProjectPath + File.separator + "generator", String.format("%s-%s-jar-with-dependencies.jar", meta.getName(), meta.getVersion()));
     }
