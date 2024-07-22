@@ -77,5 +77,21 @@ public class MainGenerator {
 
         JarGenerator.doGenerator(new File(generatorProjectPath).getAbsolutePath());
         ScriptGenerator.doGenerator(generatorProjectPath + File.separator + "generator", String.format("%s-%s-jar-with-dependencies.jar", meta.getName(), meta.getVersion()));
+
+        // 生成精简版的 代码生成器, 当中只包含 .source 代码模板文件夹 generator.sh generator.bat 脚本文件 以及 target 目录下的 包含依赖的 jar 包
+        String distFilePath = generatorProjectPath + "-dist";
+        FileUtil.mkdir(distFilePath);
+
+        // 复制 .source 代码模板文件夹
+        FileUtil.copy(sourceDestPath, distFilePath, false);
+
+        // 复制 脚本文件
+        FileUtil.copy(generatorProjectPath + File.separator + "generator", distFilePath, true);
+        FileUtil.copy(generatorProjectPath + File.separator + "generator.bat", distFilePath, true);
+
+        // 复制 jar 包
+        String targetAbsolutePath = distFilePath + File.separator + "target/";
+        FileUtil.mkdir(targetAbsolutePath);
+        FileUtil.copy(generatorProjectPath + File.separator + "target/" + String.format("%s-%s-jar-with-dependencies.jar", meta.getName(), meta.getVersion()), targetAbsolutePath, true);
     }
 }
