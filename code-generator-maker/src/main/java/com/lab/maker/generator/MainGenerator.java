@@ -23,6 +23,10 @@ public class MainGenerator {
         if (!FileUtil.exist(generatorProjectPath)) {
             FileUtil.mkdir(generatorProjectPath);
         }
+        // 复制 代码生成器 将要使用的 “项目模板文件” 到 指定路径 ".source"
+        String sourceRootPath = meta.getFileConfig().getSourceRootPath();
+        String sourceDestPath = generatorProjectPath + File.separator + ".source";
+        FileUtil.copy(sourceRootPath, sourceDestPath, false);
 
         String generatorBasePackage = StrUtil.join("/", StrUtil.split(meta.getBasePackage(), "."));
         String outputBaseJavaPackagePath = generatorProjectPath + File.separator + "src/main/java/" + generatorBasePackage;

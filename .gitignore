@@ -2,6 +2,9 @@
 .idea
 code-generator.iml
 
+### generated files
+generated
+
 ### Java template
 # Compiled class file
 *.class

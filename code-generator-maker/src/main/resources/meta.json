@@ -6,8 +6,9 @@
   "author": "lab",
   "createTime": "2023-11-22",
   "fileConfig": {
-    "inputRootPath": "F:/code/code-generator/demo-projects/acm-template-pro",
+    "inputRootPath": ".source/acm-template-pro",
     "outputRootPath": "F:/code/code-generator/generated",
+    "sourceRootPath": "F:/code/code-generator/demo-projects/acm-template-pro",
     "type": "dir",
     "files": [
       {
