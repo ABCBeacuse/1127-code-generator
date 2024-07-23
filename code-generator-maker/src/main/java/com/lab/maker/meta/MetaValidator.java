@@ -4,6 +4,9 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
+import com.lab.maker.meta.enums.FieldTypeEnums;
+import com.lab.maker.meta.enums.FileGenerateTypeEnums;
+import com.lab.maker.meta.enums.FileTypeEnum;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -36,7 +39,7 @@ public class MetaValidator {
                 String modelType = model.getType();
                 if (StrUtil.isBlank(modelType)) {
                     // 字段的默认类型为 String 类型
-                    model.setType("String");
+                    model.setType(FieldTypeEnums.STRING.getType());
                 }
             }
         }
@@ -64,7 +67,7 @@ public class MetaValidator {
         fileConfig.setOutputRootPath(outputRootPath);
 
         // type
-        String type = StrUtil.emptyToDefault(fileConfig.getType(), "dir");
+        String type = StrUtil.emptyToDefault(fileConfig.getType(), FileTypeEnum.FILE.getValue());
         fileConfig.setType(type);
 
         // files
@@ -89,17 +92,17 @@ public class MetaValidator {
             String fileType = fileInfo.getType();
             if (StrUtil.isBlank(fileType)) {
                 if (StrUtil.isEmpty(FileUtil.getSuffix(inputPath))) {
-                    fileInfo.setType("dir");
+                    fileInfo.setType(FileTypeEnum.DIR.getValue());
                 } else {
-                    fileInfo.setType("file");
+                    fileInfo.setType(FileTypeEnum.FILE.getValue());
                 }
             }
             String generateType = fileInfo.getGenerateType();
             if (StrUtil.isBlank(generateType)) {
                 if (inputPath.endsWith(".ftl")) {
-                    fileInfo.setGenerateType("dynamic");
+                    fileInfo.setGenerateType(FileGenerateTypeEnums.DYNAMIC.getValue());
                 } else {
-                    fileInfo.setGenerateType("static");
+                    fileInfo.setGenerateType(FileGenerateTypeEnums.STATIC.getValue());
                 }
             }
         }
