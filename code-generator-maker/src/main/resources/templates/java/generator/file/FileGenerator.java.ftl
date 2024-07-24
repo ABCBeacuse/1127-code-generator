@@ -6,6 +6,16 @@ import ${basePackage}.model.DataModel;
 import java.io.File;
 import java.io.IOException;
 
+<#macro generator retract fileInfo>
+${retract}inputPath = inputRootPath + File.separator + "${fileInfo.inputPath}";
+${retract}outputPath = outputRootPath + File.separator + "${fileInfo.outputPath}";
+<#if fileInfo.generateType == "static">
+${retract}StaticFileGenerator.copyFilesWithHutool(inputPath, outputPath);
+<#else>
+${retract}DynamicFileGenerator.doGenerator(inputPath, outputPath, model);
+</#if>
+</#macro>
+
 /**
  * 动静结合的 代码生成器
  */
@@ -21,24 +31,26 @@ public class FileGenerator {
         ${modelInfo.type} ${modelInfo.fieldName} = model.${modelInfo.fieldName};
 </#list>
 <#list fileConfig.files as fileInfo>
+    <#if fileInfo.groupKey??>
+        <#if fileInfo.condition??>
+        if(${fileInfo.condition}) {
+            <#list fileInfo.files as file>
+                <@generator retract="            " fileInfo = file />
+            </#list>
+        }
+        <#else>
+            <#list fileInfo.files as file>
+                <@generator retract="        " fileInfo = file />
+            </#list>
+        </#if>
+    <#else>
     <#if fileInfo.condition??>
         if(${fileInfo.condition}) {
-            inputPath = inputRootPath + File.separator + "${fileInfo.inputPath}";
-            outputPath = outputRootPath + File.separator + "${fileInfo.outputPath}";
-        <#if fileInfo.generateType == "static">
-            StaticFileGenerator.copyFilesWithHutool(inputPath, outputPath);
-        <#else>
-            DynamicFileGenerator.doGenerator(inputPath, outputPath, model);
-        </#if>
+        <@generator retract="            " fileInfo = fileInfo />
         }
     <#else>
-        inputPath = inputRootPath + File.separator + "${fileInfo.inputPath}";
-        outputPath = outputRootPath + File.separator + "${fileInfo.outputPath}";
-        <#if fileInfo.generateType == "static">
-        StaticFileGenerator.copyFilesWithHutool(inputPath, outputPath);
-        <#else>
-        DynamicFileGenerator.doGenerator(inputPath, outputPath, model);
-        </#if>
+        <@generator retract="        " fileInfo = fileInfo />
+    </#if>
     </#if>
 </#list>
     }

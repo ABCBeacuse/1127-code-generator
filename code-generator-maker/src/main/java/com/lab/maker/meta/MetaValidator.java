@@ -8,7 +8,6 @@ import com.lab.maker.meta.enums.FieldTypeEnums;
 import com.lab.maker.meta.enums.FileGenerateTypeEnums;
 import com.lab.maker.meta.enums.FileTypeEnum;
 
-import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -76,6 +75,10 @@ public class MetaValidator {
             return;
         }
         for (Meta.FileConfig.FileInfo fileInfo : fileInfos) {
+            if (StrUtil.isNotEmpty(fileInfo.getGroupKey())) {
+                // 暂时未写 文件组 的校验逻辑
+                continue;
+            }
             String inputPath = fileInfo.getInputPath();
             if (StrUtil.isBlank(inputPath)) {
                 throw new MetaException("未填写 inputPath");
