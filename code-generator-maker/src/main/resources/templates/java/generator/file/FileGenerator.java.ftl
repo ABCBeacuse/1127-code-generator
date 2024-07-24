@@ -28,7 +28,14 @@ public class FileGenerator {
         String inputPath;
         String outputPath;
 <#list modelConfig.models as modelInfo>
+    <#if modelInfo.groupKey??>
+        <#list modelInfo.models as model>
+            ${model.type} ${model.fieldName} = model.${modelInfo.groupKey}.${model.fieldName};
+        </#list>
+    <#else>
         ${modelInfo.type} ${modelInfo.fieldName} = model.${modelInfo.fieldName};
+    </#if>
+
 </#list>
 <#list fileConfig.files as fileInfo>
     <#if fileInfo.groupKey??>

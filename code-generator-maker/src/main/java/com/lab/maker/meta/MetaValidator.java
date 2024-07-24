@@ -10,6 +10,7 @@ import com.lab.maker.meta.enums.FileTypeEnum;
 
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 元信息 校验规则
@@ -31,6 +32,12 @@ public class MetaValidator {
         List<Meta.ModelConfig.ModelInfo> models = modelConfig.getModels();
         if (CollUtil.isNotEmpty(models)) {
             for (Meta.ModelConfig.ModelInfo model : models) {
+                // 拼接出 modelInfo 数据分组内 所有命令 eg, "--loop"
+                if (StrUtil.isNotEmpty(model.getGroupKey())) {
+                    String allArgs = model.getModels().stream().map(modelInfo -> String.format("\"--%s\"", modelInfo.getFieldName())).collect(Collectors.joining(", "));
+                    model.setAllArgs(allArgs);
+                    continue;
+                }
                 String fieldName = model.getFieldName();
                 if (StrUtil.isBlank(fieldName)) {
                     throw new MetaException("未填写 fieldName");
