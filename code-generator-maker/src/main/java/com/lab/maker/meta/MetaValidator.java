@@ -75,7 +75,7 @@ public class MetaValidator {
             return;
         }
         for (Meta.FileConfig.FileInfo fileInfo : fileInfos) {
-            if (StrUtil.isNotEmpty(fileInfo.getGroupKey())) {
+            if (FileTypeEnum.GROUP.getValue().equals(fileInfo.getType())) {
                 // 暂时未写 文件组 的校验逻辑
                 continue;
             }
