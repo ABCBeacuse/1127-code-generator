@@ -1,12 +1,14 @@
 package com.lab.maker.template;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONUtil;
 import com.lab.maker.meta.Meta;
 import com.lab.maker.meta.enums.FileGenerateTypeEnums;
 import com.lab.maker.meta.enums.FileTypeEnum;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +23,26 @@ public class TemplateMaker {
 
         // F:\code\code-generator
         String projectPath = System.getProperty("user.dir");
+
+
         // 1. 获取需要 挖坑 的源代码路径 (源代码项目路径)
         String sourceProjectPath = projectPath + File.separator + "demo-projects/acm-template";
+        sourceProjectPath = sourceProjectPath.replace("\\", "/");
+
+        // 工作空间隔离 (项目根目录的 .temp 文件夹下)
+        String workSpacePath = projectPath + File.separator + ".temp";
+        long tempProjectId = IdUtil.getSnowflakeNextId();
+        String tempProjectPath = workSpacePath + File.separator + tempProjectId;
+        if (!FileUtil.exist(tempProjectPath)) {
+            FileUtil.mkdir(tempProjectPath);
+        }
+
+        FileUtil.copy(sourceProjectPath, tempProjectPath, false);
 
         // 2. meta.json 中的信息配置, fileConfig 中 files 的 inputPath, 即生成 ftl 模板的基本 java 代码路径
-        String templateBaseCodePath = sourceProjectPath + File.separator + "src/com/lab/acm/MainTemplate.java";
+        String tempRootPath = tempProjectPath + File.separator + FileUtil.getLastPathEle(Paths.get(sourceProjectPath)).toString();
+        tempRootPath = tempRootPath.replace("\\", "/");
+        String templateBaseCodePath = tempRootPath + "/src/com/lab/acm/MainTemplate.java";
 
         // 3. meta.json 中的信息配置, fileConfig 中 files 的 outputPath, 即 生成的 ftl 模板路径
         String templatePath = templateBaseCodePath + ".ftl";
@@ -39,7 +56,7 @@ public class TemplateMaker {
         // 5. 字符串替换 templateBaseCodePath 中的指定部分 为 ${FieldName}
         String templateBaseCodePathStr = FileUtil.readUtf8String(templateBaseCodePath);
         String templateStr = templateBaseCodePathStr.replace("Sum: ", String.format("${%s}", modelInfo.getFieldName()));
-        if(!FileUtil.exist(templatePath)) {
+        if (!FileUtil.exist(templatePath)) {
             FileUtil.touch(templatePath);
         }
         FileUtil.writeUtf8String(templateStr, new File(templatePath));
@@ -72,6 +89,6 @@ public class TemplateMaker {
         files.add(fileInfo);
 
         // 7. 输出 meta.json 文件, toJsonPrettyStr 可以输出 有格式的 JSON 字符串
-        FileUtil.writeUtf8String(JSONUtil.toJsonPrettyStr(meta), sourceProjectPath + File.separator + "meta.json");
+        FileUtil.writeUtf8String(JSONUtil.toJsonPrettyStr(meta), tempRootPath + File.separator + "meta.json");
     }
 }

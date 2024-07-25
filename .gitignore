@@ -4,6 +4,7 @@ code-generator.iml
 
 ### generated files
 generated
+.temp
 
 ### Java template
 # Compiled class file
