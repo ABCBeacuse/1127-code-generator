@@ -14,6 +14,7 @@ import com.lab.maker.meta.enums.FileTypeEnum;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 public class TemplateMaker {
 
     /**
-     * 分步制作能力
+     * 分步制作 代码模板
      *
      * @param newMeta           基本元信息
      * @param id                工作空间 id
@@ -33,7 +34,7 @@ public class TemplateMaker {
      * @param replace           想使用 model 替换的 String 字符串内容
      * @return
      */
-    public static Long makeTemplate(Meta newMeta, Long id, String originProjectPath, String fileInputPath, Meta.ModelConfig.ModelInfo model, String replace) {
+    public static Long makeTemplate(Meta newMeta, Long id, String originProjectPath, List<String> fileInputPaths, Meta.ModelConfig.ModelInfo model, String replace) {
         if (id == null) {
             id = IdUtil.getSnowflakeNextId();
         }
@@ -52,19 +53,23 @@ public class TemplateMaker {
         // 输入文件信息
         String fileRootPath = templatePath + File.separator + FileUtil.getLastPathEle(Paths.get(originProjectPath)).toString();
 
-        String inputFileAbsolutePath = fileRootPath + File.separator + fileInputPath;
         List<Meta.FileConfig.FileInfo> fileInfos = new ArrayList<>();
-        if (FileUtil.isDirectory(inputFileAbsolutePath)) {
-            // 遍历输入路径下 所有的子文件信息（包含输入路径 以及 该输入路径的子目录）
-            List<File> files = FileUtil.loopFiles(inputFileAbsolutePath);
-            for (File file : files) {
-                Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(model, replace, fileRootPath, file);
+
+        // 允许输入 多个指定目录, 只会针对这些指定目录下的文件 生成 ftl 模板
+        for (String fileInputPath : fileInputPaths) {
+            String inputFileAbsolutePath = fileRootPath + File.separator + fileInputPath;
+            if (FileUtil.isDirectory(inputFileAbsolutePath)) {
+                // 遍历输入路径下 所有的子文件信息（包含输入路径 以及 该输入路径的子目录）
+                List<File> files = FileUtil.loopFiles(inputFileAbsolutePath);
+                for (File file : files) {
+                    Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(model, replace, fileRootPath, file);
+                    fileInfos.add(fileInfo);
+                }
+            } else {
+                // 如果传入的是文件, 则直接处理
+                Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(model, replace, fileRootPath, new File(fileInputPath));
                 fileInfos.add(fileInfo);
             }
-        } else {
-            // 如果传入的是文件, 则直接处理
-            Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(model, replace, fileRootPath, new File(fileInputPath));
-            fileInfos.add(fileInfo);
         }
 
         // 更新 meta.json 文件内容, 如果已有 meta.json 文件, 则在此基础上 额外添加 model 相关信息
@@ -157,7 +162,9 @@ public class TemplateMaker {
         String projectPath = System.getProperty("user.dir");
         String sourceProjectPath = projectPath + File.separator + "demo-projects/springboot-init-master";
         sourceProjectPath = sourceProjectPath.replace("\\", "/");
-        makeTemplate(meta, 1818120284805251072L, sourceProjectPath, "src/main/java/com/yupi/springbootinit", modelInfo, "BaseResponse");
+
+        List<String> paths = Arrays.asList("src/main/java/com/yupi/springbootinit/controller");
+        makeTemplate(meta, 1818120284805251072L, sourceProjectPath, paths, modelInfo, "BaseResponse");
         // 分布测试通过 makeTemplate(meta, 1818120284805251072L, sourceProjectPath, "src/com/lab/acm/MainTemplate.java", modelInfo, "Sum: ");
     }
 
