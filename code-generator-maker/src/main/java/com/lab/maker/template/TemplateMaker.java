@@ -51,32 +51,21 @@ public class TemplateMaker {
 
         // 输入文件信息
         String fileRootPath = templatePath + File.separator + FileUtil.getLastPathEle(Paths.get(originProjectPath)).toString();
-        String fileInputAbsolutePath = fileRootPath + File.separator + fileInputPath;
-        String fileOutPutPath = fileInputPath + ".ftl";
-        String fileOutputAbsolutePath = fileRootPath + File.separator + fileOutPutPath;
 
-        String fileContent = null;
-
-        // 如果已有模板文件, 就在这个已有的模板文件上进行修改
-        if (FileUtil.exist(fileOutputAbsolutePath)) {
-            fileContent = FileUtil.readUtf8String(fileOutputAbsolutePath);
+        String inputFileAbsolutePath = fileRootPath + File.separator + fileInputPath;
+        List<Meta.FileConfig.FileInfo> fileInfos = new ArrayList<>();
+        if (FileUtil.isDirectory(inputFileAbsolutePath)) {
+            // 遍历输入路径下 所有的子文件信息（包含输入路径 以及 该输入路径的子目录）
+            List<File> files = FileUtil.loopFiles(inputFileAbsolutePath);
+            for (File file : files) {
+                Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(model, replace, fileRootPath, file);
+                fileInfos.add(fileInfo);
+            }
         } else {
-            // 没有模板文件, 说明这是第一次操作。 ftl 模板文件还未生成
-            fileContent = FileUtil.readUtf8String(fileInputAbsolutePath);
+            // 如果传入的是文件, 则直接处理
+            Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(model, replace, fileRootPath, new File(fileInputPath));
+            fileInfos.add(fileInfo);
         }
-
-        // 根据 model 信息, 使用 字符串替换方法 fileContent 中的内容
-        fileContent = StrUtil.replace(fileContent, replace, String.format("${%s}", model.getFieldName()));
-
-        // 替换完毕后, 将内容重新写到 ftl 模板中
-        FileUtil.writeUtf8String(fileContent, fileOutputAbsolutePath);
-
-        // 追加配置参数
-        Meta.FileConfig.FileInfo file = new Meta.FileConfig.FileInfo();
-        file.setInputPath(fileInputPath);
-        file.setOutputPath(fileOutPutPath);
-        file.setType(FileTypeEnum.FILE.getValue());
-        file.setGenerateType(FileGenerateTypeEnums.DYNAMIC.getValue());
 
         // 更新 meta.json 文件内容, 如果已有 meta.json 文件, 则在此基础上 额外添加 model 相关信息
         String metaOutPutPath = fileRootPath + File.separator + "meta.json";
@@ -88,7 +77,7 @@ public class TemplateMaker {
             newMeta = oldMeta;
 
             List<Meta.FileConfig.FileInfo> files = newMeta.getFileConfig().getFiles();
-            files.add(file);
+            files.addAll(fileInfos);
             List<Meta.ModelConfig.ModelInfo> models = newMeta.getModelConfig().getModels();
             models.add(model);
             // 去重
@@ -101,7 +90,7 @@ public class TemplateMaker {
             fileConfig.setSourceRootPath(originProjectPath);
             List<Meta.FileConfig.FileInfo> files = new ArrayList<>();
             fileConfig.setFiles(files);
-            files.add(file);
+            files.addAll(fileInfos);
 
             Meta.ModelConfig modelConfig = new Meta.ModelConfig();
             newMeta.setModelConfig(modelConfig);
@@ -115,6 +104,45 @@ public class TemplateMaker {
         return id;
     }
 
+    private static Meta.FileConfig.FileInfo makeSingleFileTemplate(Meta.ModelConfig.ModelInfo model, String replace, String fileRootPath, File inputFile) {
+        String fileInputAbsolutePath = inputFile.getAbsolutePath();
+        // 存储到 FileInfo 的 相对路径
+        String fileInputPath = fileInputAbsolutePath.replace(fileRootPath + "\\", "").replace("\\", "/");
+        String fileOutPutPath = fileInputPath + ".ftl";
+        String fileOutputAbsolutePath = inputFile.getAbsolutePath() + ".ftl";
+
+        String fileContent = null;
+
+        // 如果已有模板文件, 就在这个已有的模板文件上进行修改
+        if (FileUtil.exist(fileOutputAbsolutePath)) {
+            fileContent = FileUtil.readUtf8String(fileOutputAbsolutePath);
+        } else {
+            // 没有模板文件, 说明这是第一次操作。 ftl 模板文件还未生成
+            fileContent = FileUtil.readUtf8String(fileInputAbsolutePath);
+        }
+
+        // 根据 model 信息, 使用 字符串替换方法 fileContent 中的内容
+        String newFileContent = StrUtil.replace(fileContent, replace, String.format("${%s}", model.getFieldName()));
+
+        FileGenerateTypeEnums fileType = FileGenerateTypeEnums.DYNAMIC;
+        // 有一些文件, 当中没有需要 修改的部分, 所以不应该产生 ftl 模板, 就算产生, ftl 模板中的内容 和 原文件 的内容也是一致的
+        if (newFileContent.equals(fileContent)) {
+            // 修改后的文件内容 与 原文件一致, 所以应该是 静态文件, 直接复制即可, 不需要产生 ftl 代码模板文件
+            fileOutPutPath = fileInputPath;
+            fileType = FileGenerateTypeEnums.STATIC;
+        } else {
+            // 替换完毕后, 将内容重新写到 ftl 模板中
+            FileUtil.writeUtf8String(newFileContent, fileOutputAbsolutePath);
+        }
+        // 追加配置参数
+        Meta.FileConfig.FileInfo file = new Meta.FileConfig.FileInfo();
+        file.setInputPath(fileInputPath);
+        file.setOutputPath(fileOutPutPath);
+        file.setType(FileTypeEnum.FILE.getValue());
+        file.setGenerateType(fileType.getValue());
+        return file;
+    }
+
     public static void main(String[] args) {
         // 输入项目基本信息
         Meta meta = new Meta();
@@ -122,13 +150,15 @@ public class TemplateMaker {
         meta.setDescription("ACM 示例模板生成器");
 
         Meta.ModelConfig.ModelInfo modelInfo = new Meta.ModelConfig.ModelInfo();
-        modelInfo.setFieldName("mainTemplate");
+        modelInfo.setFieldName("baseResponse");
+        // 分布测试通过 modelInfo.setFieldName("outputText");
         modelInfo.setType(FieldTypeEnums.STRING.getType());
 
         String projectPath = System.getProperty("user.dir");
-        String sourceProjectPath = projectPath + File.separator + "demo-projects/acm-template";
+        String sourceProjectPath = projectPath + File.separator + "demo-projects/springboot-init-master";
         sourceProjectPath = sourceProjectPath.replace("\\", "/");
-        makeTemplate(meta, 1818120284805251072L, sourceProjectPath, "src/com/lab/acm/MainTemplate.java", modelInfo, "MainTemplate");
+        makeTemplate(meta, 1818120284805251072L, sourceProjectPath, "src/main/java/com/yupi/springbootinit", modelInfo, "BaseResponse");
+        // 分布测试通过 makeTemplate(meta, 1818120284805251072L, sourceProjectPath, "src/com/lab/acm/MainTemplate.java", modelInfo, "Sum: ");
     }
 
     /**
