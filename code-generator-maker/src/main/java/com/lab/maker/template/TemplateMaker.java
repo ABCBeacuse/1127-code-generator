@@ -10,11 +10,16 @@ import com.lab.maker.meta.Meta;
 import com.lab.maker.meta.enums.FieldTypeEnums;
 import com.lab.maker.meta.enums.FileGenerateTypeEnums;
 import com.lab.maker.meta.enums.FileTypeEnum;
+import com.lab.maker.template.enums.FileFilterRangeEnum;
+import com.lab.maker.template.enums.FileFilterRuleEnum;
+import com.lab.maker.template.model.FileFilterConfig;
+import com.lab.maker.template.model.TemplateMakerFilterConfig;
 
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,12 +34,12 @@ public class TemplateMaker {
      * @param newMeta           基本元信息
      * @param id                工作空间 id
      * @param originProjectPath 从哪个路径下 复制 代码源码 到 temp 工作空间
-     * @param fileInputPath     代码源码 复制到 temp 工作空间 后, 生成 ftl 模板的基本代码文件
+     * @param filterConfig      文件过滤配置
      * @param model             最新的 需要向 ftl 模板文件 添加的 modelInfo 信息
      * @param replace           想使用 model 替换的 String 字符串内容
      * @return
      */
-    public static Long makeTemplate(Meta newMeta, Long id, String originProjectPath, List<String> fileInputPaths, Meta.ModelConfig.ModelInfo model, String replace) {
+    public static Long makeTemplate(Meta newMeta, Long id, String originProjectPath, TemplateMakerFilterConfig filterConfig, Meta.ModelConfig.ModelInfo model, String replace) {
         if (id == null) {
             id = IdUtil.getSnowflakeNextId();
         }
@@ -55,19 +60,15 @@ public class TemplateMaker {
 
         List<Meta.FileConfig.FileInfo> fileInfos = new ArrayList<>();
 
-        // 允许输入 多个指定目录, 只会针对这些指定目录下的文件 生成 ftl 模板
-        for (String fileInputPath : fileInputPaths) {
+        // 允许指定多个文件 或者 文件目录 的过滤配置信息, 只会针对这些指定目录下的文件 并且满足过滤配置信息的 file 文件 生成 ftl 模板
+        List<TemplateMakerFilterConfig.FilterConfig> fileFilterConfig = filterConfig.getFiles();
+        for (TemplateMakerFilterConfig.FilterConfig config : fileFilterConfig) {
+            String fileInputPath = config.getPath();
             String inputFileAbsolutePath = fileRootPath + File.separator + fileInputPath;
-            if (FileUtil.isDirectory(inputFileAbsolutePath)) {
-                // 遍历输入路径下 所有的子文件信息（包含输入路径 以及 该输入路径的子目录）
-                List<File> files = FileUtil.loopFiles(inputFileAbsolutePath);
-                for (File file : files) {
-                    Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(model, replace, fileRootPath, file);
-                    fileInfos.add(fileInfo);
-                }
-            } else {
-                // 如果传入的是文件, 则直接处理
-                Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(model, replace, fileRootPath, new File(fileInputPath));
+            // 需要进行 ftl 模板生成的 file 文件 。同时也遍历了输入路径下 所有的子文件信息（包含输入路径 以及 该输入路径的子目录）, 针对这些文件也进行了 filter 过滤器过滤
+            List<File> attendFtlFiles = FileFilter.doFilter(config.getFilters(), inputFileAbsolutePath);
+            for (File file : attendFtlFiles) {
+                Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(model, replace, fileRootPath, file);
                 fileInfos.add(fileInfo);
             }
         }
@@ -163,8 +164,24 @@ public class TemplateMaker {
         String sourceProjectPath = projectPath + File.separator + "demo-projects/springboot-init-master";
         sourceProjectPath = sourceProjectPath.replace("\\", "/");
 
-        List<String> paths = Arrays.asList("src/main/java/com/yupi/springbootinit/controller");
-        makeTemplate(meta, 1818120284805251072L, sourceProjectPath, paths, modelInfo, "BaseResponse");
+        // 过滤器配置 1
+        TemplateMakerFilterConfig.FilterConfig filterConfig = new TemplateMakerFilterConfig.FilterConfig();
+        filterConfig.setPath("src/main/java/com/yupi/springbootinit/common");
+        FileFilterConfig fileFilterConfig = FileFilterConfig.builder()
+                .range(FileFilterRangeEnum.FILE_NAME.getValue())
+                .rule(FileFilterRuleEnum.CONTAINS.getValue())
+                .value("Base")
+                .build();
+        filterConfig.setFilters(Collections.singletonList(fileFilterConfig));
+
+        // 过滤器配置 2
+        TemplateMakerFilterConfig.FilterConfig filterConfig1 = new TemplateMakerFilterConfig.FilterConfig();
+        filterConfig1.setPath("src/main/java/com/yupi/springbootinit/controller");
+
+        TemplateMakerFilterConfig templateMakerFilterConfig = new TemplateMakerFilterConfig();
+        templateMakerFilterConfig.setFiles(Arrays.asList(filterConfig, filterConfig1));
+
+        makeTemplate(meta, 1818120284805251072L, sourceProjectPath, templateMakerFilterConfig, modelInfo, "BaseResponse");
         // 分布测试通过 makeTemplate(meta, 1818120284805251072L, sourceProjectPath, "src/com/lab/acm/MainTemplate.java", modelInfo, "Sum: ");
     }
 
