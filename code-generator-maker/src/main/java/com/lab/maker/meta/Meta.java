@@ -65,7 +65,6 @@ public class Meta {
 
             // 额外信息
             private String allArgs;
-
         }
     }
 }

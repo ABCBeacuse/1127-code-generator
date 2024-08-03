@@ -13,12 +13,22 @@ public class TemplateMakerFilterConfig {
 
     private List<FilterConfig> files;
 
+    private GroupConfig groupConfig;
+
     @Data
     @NoArgsConstructor
     public static class FilterConfig {
         private String path;
 
         private List<FileFilterConfig> filters;
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class GroupConfig {
+        private String groupKey;
+        private String groupName;
+        private String condition;
     }
 
 }

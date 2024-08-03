@@ -2,6 +2,7 @@ package com.lab.maker.template;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
@@ -17,10 +18,7 @@ import com.lab.maker.template.model.TemplateMakerFilterConfig;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -71,6 +69,22 @@ public class TemplateMaker {
                 Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(model, replace, fileRootPath, file);
                 fileInfos.add(fileInfo);
             }
+        }
+
+        // 将在一次操作中的所有的文件 归类为一组 groupKey 相同
+        TemplateMakerFilterConfig.GroupConfig groupConfig = filterConfig.getGroupConfig();
+        if (groupConfig != null) {
+            // 说明要将此次操作的文件分组
+            Meta.FileConfig.FileInfo groupInfo = new Meta.FileConfig.FileInfo();
+            groupInfo.setGroupKey(groupConfig.getGroupKey());
+            groupInfo.setGroupName(groupConfig.getGroupName());
+            groupInfo.setCondition(groupConfig.getCondition());
+            groupInfo.setType(FileTypeEnum.GROUP.getValue());
+
+            // 文件全部放到一个分组内
+            groupInfo.setFiles(fileInfos);
+            fileInfos = new ArrayList<>();
+            fileInfos.add(groupInfo);
         }
 
         // 更新 meta.json 文件内容, 如果已有 meta.json 文件, 则在此基础上 额外添加 model 相关信息
@@ -181,6 +195,11 @@ public class TemplateMaker {
         TemplateMakerFilterConfig templateMakerFilterConfig = new TemplateMakerFilterConfig();
         templateMakerFilterConfig.setFiles(Arrays.asList(filterConfig, filterConfig1));
 
+        TemplateMakerFilterConfig.GroupConfig groupConfig = new TemplateMakerFilterConfig.GroupConfig();
+        groupConfig.setGroupKey("a");
+        groupConfig.setGroupName("test");
+        groupConfig.setCondition("outputTest");
+        templateMakerFilterConfig.setGroupConfig(groupConfig);
         makeTemplate(meta, 1818120284805251072L, sourceProjectPath, templateMakerFilterConfig, modelInfo, "BaseResponse");
         // 分布测试通过 makeTemplate(meta, 1818120284805251072L, sourceProjectPath, "src/com/lab/acm/MainTemplate.java", modelInfo, "Sum: ");
     }
@@ -189,8 +208,32 @@ public class TemplateMaker {
      * 根据 inputPath 去重 files 中的 重复 fileInfo 信息
      */
     private static List<Meta.FileConfig.FileInfo> distinctFiles(List<Meta.FileConfig.FileInfo> fileInfoList) {
-        // 借助 Map<k, v> 来去重, k 相同时, 新值 覆盖 旧值
-        return new ArrayList<>(fileInfoList.stream().collect(Collectors.toMap(Meta.FileConfig.FileInfo::getInputPath, o -> o, (e, r) -> r)).values());
+        // 1. 先将 分组和普通文件 分开
+        Map<String, List<Meta.FileConfig.FileInfo>> tempFileConfigFiles = fileInfoList.stream().filter(fileInfo -> StrUtil.isNotBlank(fileInfo.getGroupKey()))
+                .collect(Collectors.groupingBy(Meta.FileConfig.FileInfo::getGroupKey));
+        // {"a": [{groupKey:"a", files:[{}, {}]}, {groupKey:"a", files:[{}, {}]} ]} => {"a": [{groupKey:"a", files:[{}, {}, {}]}]}
+        // 2. 同组内文件合并
+        Map<String, Meta.FileConfig.FileInfo> groupList = new HashMap<>();
+        for (Map.Entry<String, List<Meta.FileConfig.FileInfo>> entry : tempFileConfigFiles.entrySet()) {
+            List<Meta.FileConfig.FileInfo> infoList = entry.getValue();
+            ArrayList<Meta.FileConfig.FileInfo> distinctFileInfos = new ArrayList<>(infoList.stream().flatMap(fileInfo -> fileInfo.getFiles().stream()).collect(
+                    Collectors.toMap(Meta.FileConfig.FileInfo::getInputPath, o -> o, (e, r) -> r)
+            ).values());
+            // 最新的 group 配置, 只是 groupKey 与之前相同
+            Meta.FileConfig.FileInfo latest = CollUtil.getLast(infoList);
+            latest.setFiles(distinctFileInfos);
+            groupList.put(entry.getKey(), latest);
+        }
+        // 3. 将文件分组添加到 结果列表
+        List<Meta.FileConfig.FileInfo> resultList = new ArrayList<>(groupList.values());
+        // 4. 对普通文件去重, 将未分组的文件添加到文件列表
+        resultList.addAll(new ArrayList<>(fileInfoList.stream().filter(fileInfo -> StrUtil.isBlank(fileInfo.getGroupKey()))
+                .collect(
+                        // 借助 Map<k, v> 来去重, k 相同时, 新值 覆盖 旧值
+                        Collectors.toMap(Meta.FileConfig.FileInfo::getGroupKey, o -> o, (e, r) -> r)
+                ).values()));
+
+        return resultList;
     }
 
     /**
