@@ -1,0 +1,24 @@
+{
+  "id": 1820443105594109952,
+  "meta": {
+    "name": "acm-template-generator",
+    "description": "springboot-code-generator"
+  },
+  "originProjectPath": "F:/code/code-generator/demo-projects/springboot-init-master",
+  "filterConfig": {
+    "files": [
+      {
+        "path": "src/main/java/com/yupi/springbootinit/common"
+      }
+    ]
+  },
+  "modelConfig": {
+    "models": [
+      {
+        "fieldName": "className",
+        "type": "String",
+        "replaceText": "BaseResponse"
+      }
+    ]
+  }
+}

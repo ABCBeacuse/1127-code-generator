@@ -1,8 +1,11 @@
 package com.lab.maker.template;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.json.JSONUtil;
 import com.lab.maker.meta.Meta;
 import com.lab.maker.meta.enums.FieldTypeEnums;
+import com.lab.maker.template.model.TemplateMakerConfig;
 import com.lab.maker.template.model.TemplateMakerFilterConfig;
 import com.lab.maker.template.model.TemplateMakerModelConfig;
 import org.junit.Test;
@@ -169,6 +172,14 @@ public class TemplateMakerTest {
 
         String originProjectPath = "F:/code/code-generator/demo-projects/springboot-init-master";
         TemplateMaker.makeTemplate(meta, 1820367662266433536L, originProjectPath, filterConfig, modelConfig);
+    }
+
+    @Test
+    public void makeTemplateTest() {
+        String configStr = ResourceUtil.readUtf8Str("templateMakerConfig.json");
+        TemplateMakerConfig config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
+        Long id = TemplateMaker.makeTemplate(config);
+        System.out.println(id);
     }
 
 }

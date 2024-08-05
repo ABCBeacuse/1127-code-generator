@@ -14,6 +14,7 @@ import com.lab.maker.meta.enums.FileTypeEnum;
 import com.lab.maker.template.enums.FileFilterRangeEnum;
 import com.lab.maker.template.enums.FileFilterRuleEnum;
 import com.lab.maker.template.model.FileFilterConfig;
+import com.lab.maker.template.model.TemplateMakerConfig;
 import com.lab.maker.template.model.TemplateMakerFilterConfig;
 import com.lab.maker.template.model.TemplateMakerModelConfig;
 
@@ -26,6 +27,27 @@ import java.util.stream.Collectors;
  * 基本的模板制作流程
  */
 public class TemplateMaker {
+
+    /**
+     * makeTemplate 的重载方法
+     *
+     * @param makerConfig 模板制作的配置对象
+     * @return 工作空间 id
+     */
+    public static Long makeTemplate(TemplateMakerConfig makerConfig) {
+        // 工作空间 id
+        Long id = makerConfig.getId();
+        // 项目 元信息
+        Meta meta = makerConfig.getMeta();
+        // 项目源码的路径
+        String originProjectPath = makerConfig.getOriginProjectPath();
+        // 文件信息 配置
+        TemplateMakerFilterConfig filterConfig = makerConfig.getFilterConfig();
+        // 模型信息 配置
+        TemplateMakerModelConfig modelConfig = makerConfig.getModelConfig();
+
+        return makeTemplate(meta, id, originProjectPath, filterConfig, modelConfig);
+    }
 
     /**
      * 分步制作 代码模板
@@ -187,7 +209,7 @@ public class TemplateMaker {
             // 修改后的文件内容 与 原文件一致, 所以应该是 静态文件, 直接复制即可, 不需要产生 ftl 代码模板文件
             fileOutPutPath = fileInputPath;
             fileType = FileGenerateTypeEnums.STATIC;
-        } else if (!contentEqualBefore){
+        } else if (!contentEqualBefore) {
             // 替换完毕后, 将内容重新写到 ftl 模板中
             // 有 .ftl 模板, 则只更新 ftl 模板的内容, fileType 仍然为初始的 dynamic
             FileUtil.writeUtf8String(newFileContent, fileOutputAbsolutePath);
