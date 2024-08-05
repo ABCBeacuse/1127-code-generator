@@ -15,6 +15,7 @@ import com.lab.maker.template.enums.FileFilterRangeEnum;
 import com.lab.maker.template.enums.FileFilterRuleEnum;
 import com.lab.maker.template.model.FileFilterConfig;
 import com.lab.maker.template.model.TemplateMakerFilterConfig;
+import com.lab.maker.template.model.TemplateMakerModelConfig;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -33,11 +34,10 @@ public class TemplateMaker {
      * @param id                工作空间 id
      * @param originProjectPath 从哪个路径下 复制 代码源码 到 temp 工作空间
      * @param filterConfig      文件过滤配置
-     * @param model             最新的 需要向 ftl 模板文件 添加的 modelInfo 信息
-     * @param replace           想使用 model 替换的 String 字符串内容
+     * @param modelConfig       最新的需要向 ftl 模板文件 添加的 modelInfo 信息, 包含 想使用 model 替换的 String 字符串内容
      * @return
      */
-    public static Long makeTemplate(Meta newMeta, Long id, String originProjectPath, TemplateMakerFilterConfig filterConfig, Meta.ModelConfig.ModelInfo model, String replace) {
+    public static Long makeTemplate(Meta newMeta, Long id, String originProjectPath, TemplateMakerFilterConfig filterConfig, TemplateMakerModelConfig modelConfig) {
         if (id == null) {
             id = IdUtil.getSnowflakeNextId();
         }
@@ -56,6 +56,28 @@ public class TemplateMaker {
         // 输入文件信息
         String fileRootPath = templatePath + File.separator + FileUtil.getLastPathEle(Paths.get(originProjectPath)).toString();
 
+        List<Meta.ModelConfig.ModelInfo> modelInfos = new ArrayList<>();
+        // Model 数据模型信息处理
+        List<TemplateMakerModelConfig.ModelConfig> modelsList = modelConfig.getModels();
+
+        List<Meta.ModelConfig.ModelInfo> infos = modelsList.stream().map(modelInfo -> {
+            Meta.ModelConfig.ModelInfo info = new Meta.ModelConfig.ModelInfo();
+            BeanUtil.copyProperties(modelInfo, info);
+            return info;
+        }).collect(Collectors.toList());
+        TemplateMakerModelConfig.GroupConfig modelGroupConfig = modelConfig.getGroupConfig();
+        if (modelGroupConfig != null) {
+            Meta.ModelConfig.ModelInfo modelInfo = new Meta.ModelConfig.ModelInfo();
+            modelInfo.setGroupKey(modelGroupConfig.getGroupKey());
+            modelInfo.setGroupName(modelGroupConfig.getGroupName());
+            modelInfo.setCondition(modelGroupConfig.getCondition());
+
+            modelInfo.setModels(infos);
+            modelInfos.add(modelInfo);
+        } else {
+            modelInfos.addAll(infos);
+        }
+
         List<Meta.FileConfig.FileInfo> fileInfos = new ArrayList<>();
 
         // 允许指定多个文件 或者 文件目录 的过滤配置信息, 只会针对这些指定目录下的文件 并且满足过滤配置信息的 file 文件 生成 ftl 模板
@@ -66,7 +88,7 @@ public class TemplateMaker {
             // 需要进行 ftl 模板生成的 file 文件 。同时也遍历了输入路径下 所有的子文件信息（包含输入路径 以及 该输入路径的子目录）, 针对这些文件也进行了 filter 过滤器过滤
             List<File> attendFtlFiles = FileFilter.doFilter(config.getFilters(), inputFileAbsolutePath);
             for (File file : attendFtlFiles) {
-                Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(model, replace, fileRootPath, file);
+                Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(modelConfig, fileRootPath, file);
                 fileInfos.add(fileInfo);
             }
         }
@@ -99,7 +121,7 @@ public class TemplateMaker {
             List<Meta.FileConfig.FileInfo> files = newMeta.getFileConfig().getFiles();
             files.addAll(fileInfos);
             List<Meta.ModelConfig.ModelInfo> models = newMeta.getModelConfig().getModels();
-            models.add(model);
+            models.addAll(modelInfos);
             // 去重
             newMeta.getFileConfig().setFiles(distinctFiles(files));
             newMeta.getModelConfig().setModels(distinctModels(models));
@@ -112,11 +134,11 @@ public class TemplateMaker {
             fileConfig.setFiles(files);
             files.addAll(fileInfos);
 
-            Meta.ModelConfig modelConfig = new Meta.ModelConfig();
-            newMeta.setModelConfig(modelConfig);
+            Meta.ModelConfig mConfig = new Meta.ModelConfig();
+            newMeta.setModelConfig(mConfig);
             List<Meta.ModelConfig.ModelInfo> models = new ArrayList<>();
-            modelConfig.setModels(models);
-            models.add(model);
+            mConfig.setModels(models);
+            models.addAll(modelInfos);
         }
 
         // 写到 meta.json 元信息文件
@@ -124,7 +146,7 @@ public class TemplateMaker {
         return id;
     }
 
-    private static Meta.FileConfig.FileInfo makeSingleFileTemplate(Meta.ModelConfig.ModelInfo model, String replace, String fileRootPath, File inputFile) {
+    private static Meta.FileConfig.FileInfo makeSingleFileTemplate(TemplateMakerModelConfig modelConfig, String fileRootPath, File inputFile) {
         String fileInputAbsolutePath = inputFile.getAbsolutePath();
         // 存储到 FileInfo 的 相对路径
         String fileInputPath = fileInputAbsolutePath.replace(fileRootPath + "\\", "").replace("\\", "/");
@@ -140,10 +162,19 @@ public class TemplateMaker {
             // 没有模板文件, 说明这是第一次操作。 ftl 模板文件还未生成
             fileContent = FileUtil.readUtf8String(fileInputAbsolutePath);
         }
-
+        TemplateMakerModelConfig.GroupConfig groupConfig = modelConfig.getGroupConfig();
+        List<TemplateMakerModelConfig.ModelConfig> models = modelConfig.getModels();
+        String newFileContent = fileContent;
         // 根据 model 信息, 使用 字符串替换方法 fileContent 中的内容
-        String newFileContent = StrUtil.replace(fileContent, replace, String.format("${%s}", model.getFieldName()));
-
+        if (groupConfig != null) {
+            for (TemplateMakerModelConfig.ModelConfig model : models) {
+                newFileContent = StrUtil.replace(newFileContent, model.getReplaceText(), String.format("${%s.%s}", groupConfig.getGroupKey(), model.getFieldName()));
+            }
+        } else {
+            for (TemplateMakerModelConfig.ModelConfig model : models) {
+                newFileContent = StrUtil.replace(newFileContent, model.getReplaceText(), String.format("${%s}", model.getFieldName()));
+            }
+        }
         FileGenerateTypeEnums fileType = FileGenerateTypeEnums.DYNAMIC;
         // 有一些文件, 当中没有需要 修改的部分, 所以不应该产生 ftl 模板, 就算产生, ftl 模板中的内容 和 原文件 的内容也是一致的
         if (newFileContent.equals(fileContent)) {
@@ -190,7 +221,7 @@ public class TemplateMaker {
 
         // 过滤器配置 2
         TemplateMakerFilterConfig.FilterConfig filterConfig1 = new TemplateMakerFilterConfig.FilterConfig();
-        filterConfig1.setPath("src/main/java/com/yupi/springbootinit/controller");
+        filterConfig1.setPath("src/main/resources/application.yml");
 
         TemplateMakerFilterConfig templateMakerFilterConfig = new TemplateMakerFilterConfig();
         templateMakerFilterConfig.setFiles(Arrays.asList(filterConfig, filterConfig1));
@@ -200,7 +231,30 @@ public class TemplateMaker {
         groupConfig.setGroupName("test");
         groupConfig.setCondition("outputTest");
         templateMakerFilterConfig.setGroupConfig(groupConfig);
-        makeTemplate(meta, 1818120284805251072L, sourceProjectPath, templateMakerFilterConfig, modelInfo, "BaseResponse");
+
+        // 模型参数配置
+        TemplateMakerModelConfig templateMakerModelConfig = new TemplateMakerModelConfig();
+
+        TemplateMakerModelConfig.GroupConfig groupConfig1 = new TemplateMakerModelConfig.GroupConfig();
+        groupConfig1.setGroupKey("mysql");
+        groupConfig1.setGroupName("数据库配置");
+
+        templateMakerModelConfig.setGroupConfig(groupConfig1);
+        TemplateMakerModelConfig.ModelConfig modelConfig = new TemplateMakerModelConfig.ModelConfig();
+        modelConfig.setFieldName("url");
+        modelConfig.setType(FieldTypeEnums.STRING.getType());
+        modelConfig.setDefaultValue("jdbc:mysql://localhost:3306/my_db");
+        modelConfig.setReplaceText("jdbc:mysql://localhost:3306/my_db");
+
+        TemplateMakerModelConfig.ModelConfig modelConfig1 = new TemplateMakerModelConfig.ModelConfig();
+        modelConfig1.setFieldName("username");
+        modelConfig1.setType(FieldTypeEnums.STRING.getType());
+        modelConfig1.setDefaultValue("root");
+        modelConfig1.setReplaceText("root");
+
+        templateMakerModelConfig.setModels(Arrays.asList(modelConfig, modelConfig1));
+
+        makeTemplate(meta, null, sourceProjectPath, templateMakerFilterConfig, templateMakerModelConfig);
         // 分布测试通过 makeTemplate(meta, 1818120284805251072L, sourceProjectPath, "src/com/lab/acm/MainTemplate.java", modelInfo, "Sum: ");
     }
 
@@ -240,7 +294,23 @@ public class TemplateMaker {
      * 根据 fieldName 去重 models 中的 重复 modelInfo 信息
      */
     private static List<Meta.ModelConfig.ModelInfo> distinctModels(List<Meta.ModelConfig.ModelInfo> modelInfoList) {
-        return new ArrayList<>(modelInfoList.stream().collect(Collectors.toMap(Meta.ModelConfig.ModelInfo::getFieldName, o -> o, (e, r) -> r)).values());
+        // 1. 先处理 有分组的
+        Map<String, List<Meta.ModelConfig.ModelInfo>> tempMapList = modelInfoList.stream().filter(modelInfo -> StrUtil.isNotBlank(modelInfo.getGroupKey()))
+                .collect(Collectors.groupingBy(Meta.ModelConfig.ModelInfo::getGroupKey));
+        List<Meta.ModelConfig.ModelInfo> result = new ArrayList<>();
+        for (Map.Entry<String, List<Meta.ModelConfig.ModelInfo>> entry : tempMapList.entrySet()) {
+            List<Meta.ModelConfig.ModelInfo> modelList = entry.getValue();
+            List<Meta.ModelConfig.ModelInfo> distinctModelInfo = new ArrayList<>(modelList.stream().flatMap(modelInfo -> modelInfo.getModels().stream())
+                    .collect(Collectors.toMap(Meta.ModelConfig.ModelInfo::getFieldName, o -> o, (e, r) -> r)).values());
+            Meta.ModelConfig.ModelInfo last = CollUtil.getLast(modelList);
+            last.setModels(distinctModelInfo);
+            result.add(last);
+        }
+        // 2. 再处理没有分组的
+        Collection<Meta.ModelConfig.ModelInfo> noGroupDistinct = modelInfoList.stream().filter(modelInfo -> StrUtil.isBlank(modelInfo.getGroupKey()))
+                .collect(Collectors.toMap(Meta.ModelConfig.ModelInfo::getFieldName, o -> o, (e, r) -> r)).values();
+        result.addAll(noGroupDistinct);
+        return result;
     }
 
     /**
