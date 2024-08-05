@@ -87,6 +87,9 @@ public class TemplateMaker {
             String inputFileAbsolutePath = fileRootPath + File.separator + fileInputPath;
             // 需要进行 ftl 模板生成的 file 文件 。同时也遍历了输入路径下 所有的子文件信息（包含输入路径 以及 该输入路径的子目录）, 针对这些文件也进行了 filter 过滤器过滤
             List<File> attendFtlFiles = FileFilter.doFilter(config.getFilters(), inputFileAbsolutePath);
+
+            // 过滤掉已经生成的 ftl 文件
+            attendFtlFiles = attendFtlFiles.stream().filter(file -> !file.getName().endsWith(".ftl")).collect(Collectors.toList());
             for (File file : attendFtlFiles) {
                 Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(modelConfig, fileRootPath, file);
                 fileInfos.add(fileInfo);
@@ -110,7 +113,7 @@ public class TemplateMaker {
         }
 
         // 更新 meta.json 文件内容, 如果已有 meta.json 文件, 则在此基础上 额外添加 model 相关信息
-        String metaOutPutPath = fileRootPath + File.separator + "meta.json";
+        String metaOutPutPath = templatePath + File.separator + "meta.json";
         if (FileUtil.exist(metaOutPutPath)) {
             Meta oldMeta = JSONUtil.toBean(FileUtil.readUtf8String(metaOutPutPath), Meta.class);
 
@@ -155,8 +158,9 @@ public class TemplateMaker {
 
         String fileContent = null;
 
+        boolean hasTemplate = FileUtil.exist(fileOutputAbsolutePath);
         // 如果已有模板文件, 就在这个已有的模板文件上进行修改
-        if (FileUtil.exist(fileOutputAbsolutePath)) {
+        if (hasTemplate) {
             fileContent = FileUtil.readUtf8String(fileOutputAbsolutePath);
         } else {
             // 没有模板文件, 说明这是第一次操作。 ftl 模板文件还未生成
@@ -177,18 +181,21 @@ public class TemplateMaker {
         }
         FileGenerateTypeEnums fileType = FileGenerateTypeEnums.DYNAMIC;
         // 有一些文件, 当中没有需要 修改的部分, 所以不应该产生 ftl 模板, 就算产生, ftl 模板中的内容 和 原文件 的内容也是一致的
-        if (newFileContent.equals(fileContent)) {
+        boolean contentEqualBefore = newFileContent.equals(fileContent);
+        if (!hasTemplate && contentEqualBefore) {
+            // 没有 ftl 模板的前提下
             // 修改后的文件内容 与 原文件一致, 所以应该是 静态文件, 直接复制即可, 不需要产生 ftl 代码模板文件
             fileOutPutPath = fileInputPath;
             fileType = FileGenerateTypeEnums.STATIC;
-        } else {
+        } else if (!contentEqualBefore){
             // 替换完毕后, 将内容重新写到 ftl 模板中
+            // 有 .ftl 模板, 则只更新 ftl 模板的内容, fileType 仍然为初始的 dynamic
             FileUtil.writeUtf8String(newFileContent, fileOutputAbsolutePath);
         }
         // 追加配置参数
         Meta.FileConfig.FileInfo file = new Meta.FileConfig.FileInfo();
-        file.setInputPath(fileInputPath);
-        file.setOutputPath(fileOutPutPath);
+        file.setInputPath(fileOutPutPath);
+        file.setOutputPath(fileInputPath);
         file.setType(FileTypeEnum.FILE.getValue());
         file.setGenerateType(fileType.getValue());
         return file;
@@ -241,20 +248,20 @@ public class TemplateMaker {
 
         templateMakerModelConfig.setGroupConfig(groupConfig1);
         TemplateMakerModelConfig.ModelConfig modelConfig = new TemplateMakerModelConfig.ModelConfig();
-        modelConfig.setFieldName("url");
+        modelConfig.setFieldName("password");
         modelConfig.setType(FieldTypeEnums.STRING.getType());
-        modelConfig.setDefaultValue("jdbc:mysql://localhost:3306/my_db");
-        modelConfig.setReplaceText("jdbc:mysql://localhost:3306/my_db");
+        modelConfig.setDefaultValue("123456");
+        modelConfig.setReplaceText("123456");
 
-        TemplateMakerModelConfig.ModelConfig modelConfig1 = new TemplateMakerModelConfig.ModelConfig();
-        modelConfig1.setFieldName("username");
-        modelConfig1.setType(FieldTypeEnums.STRING.getType());
-        modelConfig1.setDefaultValue("root");
-        modelConfig1.setReplaceText("root");
+//        TemplateMakerModelConfig.ModelConfig modelConfig1 = new TemplateMakerModelConfig.ModelConfig();
+//        modelConfig1.setFieldName("username");
+//        modelConfig1.setType(FieldTypeEnums.STRING.getType());
+//        modelConfig1.setDefaultValue("root");
+//        modelConfig1.setReplaceText("root");
 
-        templateMakerModelConfig.setModels(Arrays.asList(modelConfig, modelConfig1));
+        templateMakerModelConfig.setModels(Arrays.asList(modelConfig));
 
-        makeTemplate(meta, null, sourceProjectPath, templateMakerFilterConfig, templateMakerModelConfig);
+        makeTemplate(meta, 1820286518577541120L, sourceProjectPath, templateMakerFilterConfig, templateMakerModelConfig);
         // 分布测试通过 makeTemplate(meta, 1818120284805251072L, sourceProjectPath, "src/com/lab/acm/MainTemplate.java", modelInfo, "Sum: ");
     }
 
@@ -271,7 +278,7 @@ public class TemplateMaker {
         for (Map.Entry<String, List<Meta.FileConfig.FileInfo>> entry : tempFileConfigFiles.entrySet()) {
             List<Meta.FileConfig.FileInfo> infoList = entry.getValue();
             ArrayList<Meta.FileConfig.FileInfo> distinctFileInfos = new ArrayList<>(infoList.stream().flatMap(fileInfo -> fileInfo.getFiles().stream()).collect(
-                    Collectors.toMap(Meta.FileConfig.FileInfo::getInputPath, o -> o, (e, r) -> r)
+                    Collectors.toMap(Meta.FileConfig.FileInfo::getOutputPath, o -> o, (e, r) -> r)
             ).values());
             // 最新的 group 配置, 只是 groupKey 与之前相同
             Meta.FileConfig.FileInfo latest = CollUtil.getLast(infoList);
@@ -284,7 +291,7 @@ public class TemplateMaker {
         resultList.addAll(new ArrayList<>(fileInfoList.stream().filter(fileInfo -> StrUtil.isBlank(fileInfo.getGroupKey()))
                 .collect(
                         // 借助 Map<k, v> 来去重, k 相同时, 新值 覆盖 旧值
-                        Collectors.toMap(Meta.FileConfig.FileInfo::getGroupKey, o -> o, (e, r) -> r)
+                        Collectors.toMap(Meta.FileConfig.FileInfo::getOutputPath, o -> o, (e, r) -> r)
                 ).values()));
 
         return resultList;
