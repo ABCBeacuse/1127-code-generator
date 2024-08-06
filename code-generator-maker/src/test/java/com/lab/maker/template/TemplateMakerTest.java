@@ -213,6 +213,11 @@ public class TemplateMakerTest {
         configStr = ResourceUtil.readUtf8Str(rootPath + "templateInitConfig6.json");
         config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
         TemplateMaker.makeTemplate(config);
+
+        // 配置 mysql 数据库信息
+        configStr = ResourceUtil.readUtf8Str(rootPath + "templateInitConfig7.json");
+        config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
+        TemplateMaker.makeTemplate(config);
     }
 
 }

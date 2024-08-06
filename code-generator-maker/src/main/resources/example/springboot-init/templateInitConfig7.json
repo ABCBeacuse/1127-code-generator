@@ -1,0 +1,41 @@
+{
+  "id": 1,
+  "filterConfig": {
+    "files": [
+      {
+        "path": "src/main/resources/application.yml"
+      }
+    ]
+  },
+  "modelConfig": {
+    "groupConfig": {
+      "groupKey": "mysqlConfig",
+      "groupName": "mysql 数据库配置",
+      "type": "MysqlConfig",
+      "description": "mysql 数据库的相关配置"
+    },
+    "models": [
+      {
+        "fieldName": "url",
+        "type": "string",
+        "description": "数据库 url",
+        "defaultValue": "jdbc:mysql://localhost:3306/my_db",
+        "replaceText": "jdbc:mysql://localhost:3306/my_db"
+      },
+      {
+        "fieldName": "username",
+        "type": "string",
+        "description": "数据库用户名",
+        "defaultValue": "root",
+        "replaceText": "root"
+      },
+      {
+        "fieldName": "password",
+        "type": "string",
+        "description": "数据库连接密码",
+        "defaultValue": "123456",
+        "replaceText": "123456"
+      }
+    ]
+  }
+}
