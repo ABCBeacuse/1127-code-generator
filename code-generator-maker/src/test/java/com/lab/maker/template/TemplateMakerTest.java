@@ -199,6 +199,11 @@ public class TemplateMakerTest {
         configStr = ResourceUtil.readUtf8Str(rootPath + "templateInitConfig3.json");
         config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
         TemplateMaker.makeTemplate(config);
+
+        // 控制 Cors 跨域是否开启
+        configStr = ResourceUtil.readUtf8Str(rootPath + "templateInitConfig4.json");
+        config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
+        TemplateMaker.makeTemplate(config);
     }
 
 }

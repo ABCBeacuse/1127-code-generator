@@ -20,6 +20,8 @@ public class TemplateMakerFilterConfig {
     public static class FilterConfig {
         private String path;
 
+        private String condition;
+
         private List<FileFilterConfig> filters;
     }
 

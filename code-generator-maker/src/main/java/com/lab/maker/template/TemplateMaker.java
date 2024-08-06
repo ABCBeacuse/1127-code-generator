@@ -149,7 +149,7 @@ public class TemplateMaker {
             // 过滤掉已经生成的 ftl 文件
             attendFtlFiles = attendFtlFiles.stream().filter(file -> !file.getName().endsWith(".ftl")).collect(Collectors.toList());
             for (File file : attendFtlFiles) {
-                Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(modelConfig, fileRootPath, file);
+                Meta.FileConfig.FileInfo fileInfo = makeSingleFileTemplate(modelConfig, fileRootPath, file, config);
                 fileInfos.add(fileInfo);
             }
         }
@@ -202,7 +202,7 @@ public class TemplateMaker {
         return modelInfos;
     }
 
-    private static Meta.FileConfig.FileInfo makeSingleFileTemplate(TemplateMakerModelConfig modelConfig, String fileRootPath, File inputFile) {
+    private static Meta.FileConfig.FileInfo makeSingleFileTemplate(TemplateMakerModelConfig modelConfig, String fileRootPath, File inputFile, TemplateMakerFilterConfig.FilterConfig fileInfoConfig) {
         if (modelConfig == null) {
             return new Meta.FileConfig.FileInfo();
         }
@@ -252,6 +252,7 @@ public class TemplateMaker {
         Meta.FileConfig.FileInfo file = new Meta.FileConfig.FileInfo();
         file.setInputPath(fileOutPutPath);
         file.setOutputPath(fileInputPath);
+        file.setCondition(fileInfoConfig.getCondition());
         file.setType(FileTypeEnum.FILE.getValue());
         file.setGenerateType(fileType.getValue());
         return file;
