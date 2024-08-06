@@ -28,7 +28,7 @@ public class MetaManager {
 
     private static Meta initMeta() {
         // 读取 classpath 类路径下的文件
-        String metaInfo = ResourceUtil.readUtf8Str("meta.json");
+        String metaInfo = ResourceUtil.readUtf8Str("springboot-init-meta.json");
         // 将 JSON 字符串 转为 Meta 对象
         Meta meta = JSONUtil.toBean(metaInfo, Meta.class);
         // 校验 meta 元数据 对象 数据规则

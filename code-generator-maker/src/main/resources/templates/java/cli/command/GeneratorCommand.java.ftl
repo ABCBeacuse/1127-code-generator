@@ -25,7 +25,7 @@ public class GeneratorCommand implements Callable<Integer> {
     @Data
     static class ${modelInfo.type}Command implements Callable<Integer> {
         <#list modelInfo.models as model>
-        @Option(names = {<#if model.abbr??>"-${model.abbr}", </#if>"--${model.fieldName}"}, arity = "0..1", <#if model.description??>description = "${model.description}", </#if>interactive = true)
+        @Option(names = {<#if model.abbr??>"-${model.abbr}", </#if>"--${model.fieldName}"}, arity = "0..1", <#if model.description??>description = "${model.description}", </#if>interactive = true, echo = true)
         private ${model.type} ${model.fieldName}<#if model.defaultValue??> = ${model.defaultValue?c} </#if>;
         </#list>
 
@@ -39,7 +39,7 @@ public class GeneratorCommand implements Callable<Integer> {
 
     }
     <#else>
-    @Option(names = {<#if modelInfo.abbr??>"-${modelInfo.abbr}", </#if>"--${modelInfo.fieldName}"}, arity = "0..1", <#if modelInfo.description??>description = "${modelInfo.description}", </#if>interactive = true)
+    @Option(names = {<#if modelInfo.abbr??>"-${modelInfo.abbr}", </#if>"--${modelInfo.fieldName}"}, arity = "0..1", <#if modelInfo.description??>description = "${modelInfo.description}", </#if>interactive = true, echo = true)
     private ${modelInfo.type} ${modelInfo.fieldName}<#if modelInfo.defaultValue??> = ${modelInfo.defaultValue?c} </#if>;
     </#if>
     </#list>
@@ -50,8 +50,8 @@ public class GeneratorCommand implements Callable<Integer> {
     <#if modelInfo.groupKey??>
         <#if modelInfo.condition ??>
         if(${modelInfo.condition}) {
-          CommandLine commandLine = new CommandLine(${modelInfo.type}Command.class);
-          commandLine.execute(${modelInfo.allArgs});
+          CommandLine ${modelInfo.groupKey}CommandLine = new CommandLine(${modelInfo.type}Command.class);
+          ${modelInfo.groupKey}CommandLine.execute(${modelInfo.allArgs});
         }
         <#else>
         CommandLine commandLine = new CommandLine(${modelInfo.type}Command.class);

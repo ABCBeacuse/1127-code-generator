@@ -1,0 +1,749 @@
+{
+    "name": "springboot-init-generator",
+    "description": "springboot-init-code-generator",
+    "basePackage": "com.lab",
+    "fileConfig": {
+        "sourceRootPath": "F:/code/code-generator/code-generator-maker/.temp/1/springboot-init-master",
+        "files": [
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/wxmp/handler/MessageHandler.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/wxmp/handler/MessageHandler.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "mvnw",
+                "outputPath": "mvnw",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/test/java/com/yupi/springbootinit/mapper/PostMapperTest.java.ftl",
+                "outputPath": "src/test/java/com/yupi/springbootinit/mapper/PostMapperTest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/test/java/com/yupi/springbootinit/MainApplicationTests.java.ftl",
+                "outputPath": "src/test/java/com/yupi/springbootinit/MainApplicationTests.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/exception/BusinessException.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/exception/BusinessException.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/common/PageRequest.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/common/PageRequest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/config/MyBatisPlusConfig.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/config/MyBatisPlusConfig.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/model/enums/UserRoleEnum.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/model/enums/UserRoleEnum.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "sql/create_table.sql",
+                "outputPath": "sql/create_table.sql",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "doc/swagger.png",
+                "outputPath": "doc/swagger.png",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/exception/GlobalExceptionHandler.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/exception/GlobalExceptionHandler.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/config/Knife4jConfig.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/config/Knife4jConfig.java",
+                "type": "file",
+                "generateType": "dynamic",
+                "condition": "needDocs"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/model/vo/LoginUserVO.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/model/vo/LoginUserVO.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/resources/application-prod.yml",
+                "outputPath": "src/main/resources/application-prod.yml",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/config/CosClientConfig.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/config/CosClientConfig.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/config/WxOpenConfig.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/config/WxOpenConfig.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/test/.DS_Store",
+                "outputPath": "src/test/.DS_Store",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/wxmp/handler/EventHandler.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/wxmp/handler/EventHandler.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/constant/UserConstant.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/constant/UserConstant.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/common/DeleteRequest.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/common/DeleteRequest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/user/UserAddRequest.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/user/UserAddRequest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/model/enums/FileUploadBizEnum.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/model/enums/FileUploadBizEnum.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": ".DS_Store",
+                "outputPath": ".DS_Store",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/test/java/com/yupi/springbootinit/service/PostThumbServiceTest.java.ftl",
+                "outputPath": "src/test/java/com/yupi/springbootinit/service/PostThumbServiceTest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/model/entity/User.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/model/entity/User.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/common/ResultUtils.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/common/ResultUtils.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/config/CorsConfig.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/config/CorsConfig.java",
+                "type": "file",
+                "generateType": "dynamic",
+                "condition": "needCors"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/utils/SqlUtils.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/utils/SqlUtils.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "sql/post_es_mapping.json",
+                "outputPath": "sql/post_es_mapping.json",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/controller/UserController.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/controller/UserController.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "mvnw.cmd",
+                "outputPath": "mvnw.cmd",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/main/resources/application-test.yml",
+                "outputPath": "src/main/resources/application-test.yml",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/wxmp/WxMpMsgRouter.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/wxmp/WxMpMsgRouter.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/utils/SpringContextUtils.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/utils/SpringContextUtils.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": ".mvn/wrapper/maven-wrapper.properties",
+                "outputPath": ".mvn/wrapper/maven-wrapper.properties",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "README.md.ftl",
+                "outputPath": "README.md",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/aop/LogInterceptor.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/aop/LogInterceptor.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/user/UserUpdateRequest.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/user/UserUpdateRequest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/service/UserService.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/service/UserService.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/test/java/com/yupi/springbootinit/manager/CosManagerTest.java.ftl",
+                "outputPath": "src/test/java/com/yupi/springbootinit/manager/CosManagerTest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/user/UserUpdateMyRequest.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/user/UserUpdateMyRequest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/test/java/com/yupi/springbootinit/service/UserServiceTest.java.ftl",
+                "outputPath": "src/test/java/com/yupi/springbootinit/service/UserServiceTest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/constant/CommonConstant.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/constant/CommonConstant.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/generate/CodeGenerator.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/generate/CodeGenerator.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/common/ErrorCode.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/common/ErrorCode.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/controller/FileController.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/controller/FileController.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": ".gitignore",
+                "outputPath": ".gitignore",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/aop/AuthInterceptor.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/aop/AuthInterceptor.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/resources/test_excel.xlsx",
+                "outputPath": "src/main/resources/test_excel.xlsx",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/service/impl/UserServiceImpl.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/service/impl/UserServiceImpl.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/user/UserRegisterRequest.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/user/UserRegisterRequest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "pom.xml.ftl",
+                "outputPath": "pom.xml",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/resources/banner.txt",
+                "outputPath": "src/main/resources/banner.txt",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/constant/FileConstant.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/constant/FileConstant.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/resources/mapper/UserMapper.xml.ftl",
+                "outputPath": "src/main/resources/mapper/UserMapper.xml",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/resources/META-INF/additional-spring-configuration-metadata.json",
+                "outputPath": "src/main/resources/META-INF/additional-spring-configuration-metadata.json",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/model/vo/UserVO.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/model/vo/UserVO.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/user/UserQueryRequest.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/user/UserQueryRequest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/MainApplication.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/MainApplication.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/utils/NetUtils.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/utils/NetUtils.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/test/java/com/yupi/springbootinit/service/PostFavourServiceTest.java.ftl",
+                "outputPath": "src/test/java/com/yupi/springbootinit/service/PostFavourServiceTest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/controller/WxMpController.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/controller/WxMpController.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/.DS_Store",
+                "outputPath": "src/.DS_Store",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/test/java/com/yupi/springbootinit/mapper/PostFavourMapperTest.java.ftl",
+                "outputPath": "src/test/java/com/yupi/springbootinit/mapper/PostFavourMapperTest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/mapper/UserMapper.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/mapper/UserMapper.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/exception/ThrowUtils.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/exception/ThrowUtils.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/manager/CosManager.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/manager/CosManager.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/common/BaseResponse.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/common/BaseResponse.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/wxmp/WxMpConstant.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/wxmp/WxMpConstant.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/file/UploadFileRequest.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/file/UploadFileRequest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/config/JsonConfig.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/config/JsonConfig.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/test/java/com/yupi/springbootinit/utils/EasyExcelTest.java.ftl",
+                "outputPath": "src/test/java/com/yupi/springbootinit/utils/EasyExcelTest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "Dockerfile",
+                "outputPath": "Dockerfile",
+                "type": "file",
+                "generateType": "static"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/wxmp/handler/SubscribeHandler.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/wxmp/handler/SubscribeHandler.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/user/UserLoginRequest.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/user/UserLoginRequest.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/resources/application.yml.ftl",
+                "outputPath": "src/main/resources/application.yml",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "inputPath": "src/main/java/com/yupi/springbootinit/annotation/AuthCheck.java.ftl",
+                "outputPath": "src/main/java/com/yupi/springbootinit/annotation/AuthCheck.java",
+                "type": "file",
+                "generateType": "dynamic"
+            },
+            {
+                "type": "group",
+                "condition": "needPost",
+                "groupKey": "post",
+                "groupName": "帖子功能相关",
+                "files": [
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/service/PostThumbService.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/service/PostThumbService.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/postfavour/PostFavourQueryRequest.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/postfavour/PostFavourQueryRequest.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/resources/mapper/PostFavourMapper.xml.ftl",
+                        "outputPath": "src/main/resources/mapper/PostFavourMapper.xml",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/resources/mapper/PostMapper.xml.ftl",
+                        "outputPath": "src/main/resources/mapper/PostMapper.xml",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/job/once/FullSyncPostToEs.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/job/once/FullSyncPostToEs.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/controller/PostThumbController.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/controller/PostThumbController.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/post/PostEsDTO.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/post/PostEsDTO.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/postthumb/PostThumbAddRequest.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/postthumb/PostThumbAddRequest.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/model/entity/PostFavour.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/model/entity/PostFavour.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/postfavour/PostFavourAddRequest.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/postfavour/PostFavourAddRequest.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/model/entity/Post.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/model/entity/Post.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/job/cycle/IncSyncPostToEs.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/job/cycle/IncSyncPostToEs.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/service/impl/PostServiceImpl.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/service/impl/PostServiceImpl.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/service/impl/PostThumbServiceImpl.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/service/impl/PostThumbServiceImpl.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/service/impl/PostFavourServiceImpl.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/service/impl/PostFavourServiceImpl.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/post/PostQueryRequest.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/post/PostQueryRequest.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/controller/PostFavourController.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/controller/PostFavourController.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/model/entity/PostThumb.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/model/entity/PostThumb.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/mapper/PostFavourMapper.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/mapper/PostFavourMapper.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/controller/PostController.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/controller/PostController.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/mapper/PostMapper.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/mapper/PostMapper.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/service/PostService.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/service/PostService.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/post/PostAddRequest.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/post/PostAddRequest.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/mapper/PostThumbMapper.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/mapper/PostThumbMapper.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/esdao/PostEsDao.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/esdao/PostEsDao.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/model/vo/PostVO.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/model/vo/PostVO.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/service/PostFavourService.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/service/PostFavourService.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/post/PostUpdateRequest.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/post/PostUpdateRequest.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/resources/mapper/PostThumbMapper.xml.ftl",
+                        "outputPath": "src/main/resources/mapper/PostThumbMapper.xml",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    },
+                    {
+                        "inputPath": "src/main/java/com/yupi/springbootinit/model/dto/post/PostEditRequest.java.ftl",
+                        "outputPath": "src/main/java/com/yupi/springbootinit/model/dto/post/PostEditRequest.java",
+                        "type": "file",
+                        "generateType": "dynamic"
+                    }
+                ]
+            }
+        ]
+    },
+    "modelConfig": {
+        "models": [
+            {
+                "type": "MysqlConfig",
+                "description": "mysql 数据库的相关配置",
+                "groupKey": "mysqlConfig",
+                "groupName": "mysql 数据库配置",
+                "models": [
+                    {
+                        "fieldName": "password",
+                        "type": "String",
+                        "description": "数据库连接密码",
+                        "defaultValue": "123456"
+                    },
+                    {
+                        "fieldName": "url",
+                        "type": "String",
+                        "description": "数据库 url",
+                        "defaultValue": "jdbc:mysql://localhost:3306/my_db"
+                    },
+                    {
+                        "fieldName": "username",
+                        "type": "String",
+                        "description": "数据库用户名",
+                        "defaultValue": "root"
+                    }
+                ]
+            },
+            {
+                "type": "DocsConfig",
+                "description": "是否开启 Knife4jConfig 接口文档",
+                "groupKey": "docsConfig",
+                "groupName": "接口文档配置",
+                "condition": "needDocs",
+                "models": [
+                    {
+                        "fieldName": "description",
+                        "type": "String",
+                        "description": "接口文档描述",
+                        "defaultValue": "接口文档描述"
+                    },
+                    {
+                        "fieldName": "title",
+                        "type": "String",
+                        "description": "接口文档标题",
+                        "defaultValue": "接口文档"
+                    },
+                    {
+                        "fieldName": "version",
+                        "type": "String",
+                        "description": "接口文档版本",
+                        "defaultValue": "1.0"
+                    }
+                ]
+            },
+            {
+                "fieldName": "needDocs",
+                "type": "boolean",
+                "description": "是否开启接口文档",
+                "defaultValue": true
+            },
+            {
+                "fieldName": "needPost",
+                "type": "boolean",
+                "description": "是否开启帖子功能",
+                "defaultValue": true
+            },
+            {
+                "fieldName": "needCors",
+                "type": "boolean",
+                "description": "是否开启跨域功能",
+                "defaultValue": true
+            },
+            {
+                "fieldName": "basePackage",
+                "type": "String",
+                "description": "基础包名",
+                "defaultValue": "com.yupi"
+            },
+            {
+                "fieldName": "needRedis",
+                "type": "boolean",
+                "description": "是否开启 Redis",
+                "defaultValue": true
+            }
+        ]
+    }
+}

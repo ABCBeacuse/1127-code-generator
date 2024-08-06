@@ -14,9 +14,6 @@
 
 > generator <命令> <选项参数>
 
-示例命令:
-> generator <#list modelConfig.models as modelInfo><#if modelInfo.groupKey??><#list modelInfo.models as model>- ${model.abbr} </#list><#else>- ${modelInfo.abbr}</#if> </#list>
-
 ## 参数说明
 
 <#list modelConfig.models as modelInfo>
@@ -29,7 +26,7 @@ ${model ? index + 1}) ${model.fieldName}
 
 默认值：${model.defaultValue?c}
 
-缩写：${model.abbr}
+<#if model.abbr??>缩写：${model.abbr}</#if>
 </#list>
 <#else>
 类型：${modelInfo.type}
@@ -38,7 +35,7 @@ ${model ? index + 1}) ${model.fieldName}
 
 默认值：${modelInfo.defaultValue?c}
 
-缩写：${modelInfo.abbr}
+<#if modelInfo.abbr??>缩写：${modelInfo.abbr}</#if>
 </#if>
 
 

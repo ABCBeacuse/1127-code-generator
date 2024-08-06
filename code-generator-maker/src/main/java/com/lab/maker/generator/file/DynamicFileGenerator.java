@@ -18,7 +18,7 @@ public class DynamicFileGenerator {
 
     public static void doGenerator(String templatePath, String outputFilePath, Meta dataModel) throws IOException, TemplateException {
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_32);
-        configuration.setDefaultEncoding("UTF-8");
+        configuration.setDefaultEncoding("GBK");
 
         // 获取 FTL 模板的所在位置, 模板文件 的 父目录 作为 Configuration 对象设置的 模板文件夹
         String templateDirectory = new File(templatePath).getParent();

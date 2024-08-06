@@ -2,7 +2,8 @@
   "id": 1,
   "meta": {
     "name": "springboot-init-generator",
-    "description": "springboot-init-code-generator"
+    "description": "springboot-init-code-generator",
+    "basePackage": "com.lab"
   },
   "originProjectPath": "../../../demo-projects/springboot-init-master"
 }

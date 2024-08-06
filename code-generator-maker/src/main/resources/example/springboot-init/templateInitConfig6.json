@@ -19,21 +19,21 @@
     "models": [
       {
         "fieldName": "title",
-        "type": "string",
+        "type": "String",
         "description": "接口文档标题",
         "defaultValue": "接口文档",
         "replaceText": "project-backend"
       },
       {
         "fieldName": "description",
-        "type": "string",
+        "type": "String",
         "description": "接口文档描述",
         "defaultValue": "接口文档描述",
         "replaceText": "springboot-init"
       },
       {
         "fieldName": "version",
-        "type": "string",
+        "type": "String",
         "description": "接口文档版本",
         "defaultValue": "1.0",
         "replaceText": "1.0"

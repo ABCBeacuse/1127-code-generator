@@ -17,21 +17,21 @@
     "models": [
       {
         "fieldName": "url",
-        "type": "string",
+        "type": "String",
         "description": "数据库 url",
         "defaultValue": "jdbc:mysql://localhost:3306/my_db",
         "replaceText": "jdbc:mysql://localhost:3306/my_db"
       },
       {
         "fieldName": "username",
-        "type": "string",
+        "type": "String",
         "description": "数据库用户名",
         "defaultValue": "root",
         "replaceText": "root"
       },
       {
         "fieldName": "password",
-        "type": "string",
+        "type": "String",
         "description": "数据库连接密码",
         "defaultValue": "123456",
         "replaceText": "123456"

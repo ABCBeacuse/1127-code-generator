@@ -4,7 +4,7 @@ package com.lab.maker.meta.enums;
  * modelConfig 中的 model 字段类型枚举
  */
 public enum FieldTypeEnums {
-    STRING("string"), BOOLEAN("boolean");
+    STRING("String"), BOOLEAN("boolean");
 
     private String type;
 

@@ -15,6 +15,7 @@ import java.io.IOException;
  */
 public abstract class GeneratorTemplate {
 
+
     public void doGenerator() throws TemplateException, IOException, InterruptedException {
         Meta meta = MetaManager.getMetaInstance();
 
