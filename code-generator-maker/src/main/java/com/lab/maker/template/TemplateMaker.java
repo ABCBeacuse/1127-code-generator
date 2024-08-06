@@ -190,9 +190,7 @@ public class TemplateMaker {
         TemplateMakerModelConfig.GroupConfig modelGroupConfig = modelConfig.getGroupConfig();
         if (modelGroupConfig != null) {
             Meta.ModelConfig.ModelInfo modelInfo = new Meta.ModelConfig.ModelInfo();
-            modelInfo.setGroupKey(modelGroupConfig.getGroupKey());
-            modelInfo.setGroupName(modelGroupConfig.getGroupName());
-            modelInfo.setCondition(modelGroupConfig.getCondition());
+            BeanUtil.copyProperties(modelGroupConfig, modelInfo);
 
             modelInfo.setModels(infos);
             modelInfos.add(modelInfo);

@@ -204,6 +204,15 @@ public class TemplateMakerTest {
         configStr = ResourceUtil.readUtf8Str(rootPath + "templateInitConfig4.json");
         config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
         TemplateMaker.makeTemplate(config);
+
+        // 控制 接口文档 是否开启
+        configStr = ResourceUtil.readUtf8Str(rootPath + "templateInitConfig5.json");
+        config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
+        TemplateMaker.makeTemplate(config);
+
+        configStr = ResourceUtil.readUtf8Str(rootPath + "templateInitConfig6.json");
+        config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
+        TemplateMaker.makeTemplate(config);
     }
 
 }
