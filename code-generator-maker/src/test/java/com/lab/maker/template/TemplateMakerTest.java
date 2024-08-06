@@ -218,6 +218,12 @@ public class TemplateMakerTest {
         configStr = ResourceUtil.readUtf8Str(rootPath + "templateInitConfig7.json");
         config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
         TemplateMaker.makeTemplate(config);
+
+        //控制 Redis 是否开启
+        // 配置 mysql 数据库信息
+        configStr = ResourceUtil.readUtf8Str(rootPath + "templateInitConfig8.json");
+        config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
+        TemplateMaker.makeTemplate(config);
     }
 
 }
