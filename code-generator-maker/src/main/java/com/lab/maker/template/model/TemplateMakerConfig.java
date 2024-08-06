@@ -18,4 +18,6 @@ public class TemplateMakerConfig {
     private TemplateMakerFilterConfig filterConfig;
 
     private TemplateMakerModelConfig modelConfig;
+
+    private TemplateFileRetainRule repeatRule = new TemplateFileRetainRule();
 }

@@ -53,7 +53,7 @@ public class TemplateMakerTest {
         modelConfig.setModels(Collections.singletonList(modelInfo));
 
         String originProjectPath = "F:/code/code-generator/demo-projects/springboot-init-master";
-        TemplateMaker.makeTemplate(meta, 1820367662266433536L, originProjectPath, filterConfig, modelConfig);
+        TemplateMaker.makeTemplate(meta, 1820367662266433536L, originProjectPath, filterConfig, modelConfig, null);
     }
 
     /**
@@ -100,7 +100,7 @@ public class TemplateMakerTest {
         modelConfig.setModels(Collections.singletonList(modelInfo));
 
         String originProjectPath = "F:/code/code-generator/demo-projects/springboot-init-master";
-        TemplateMaker.makeTemplate(meta, 1820367662266433536L, originProjectPath, filterConfig, modelConfig);
+        TemplateMaker.makeTemplate(meta, 1820367662266433536L, originProjectPath, filterConfig, modelConfig, null);
     }
 
     /**
@@ -138,7 +138,7 @@ public class TemplateMakerTest {
         modelConfig.setModels(Collections.singletonList(modelInfo));
 
         String originProjectPath = "F:/code/code-generator/demo-projects/springboot-init-master";
-        TemplateMaker.makeTemplate(meta, 1820367662266433536L, originProjectPath, filterConfig, modelConfig);
+        TemplateMaker.makeTemplate(meta, 1820367662266433536L, originProjectPath, filterConfig, modelConfig, null);
     }
 
     /**
@@ -171,7 +171,7 @@ public class TemplateMakerTest {
         modelConfig.setModels(Collections.singletonList(modelInfo));
 
         String originProjectPath = "F:/code/code-generator/demo-projects/springboot-init-master";
-        TemplateMaker.makeTemplate(meta, 1820367662266433536L, originProjectPath, filterConfig, modelConfig);
+        TemplateMaker.makeTemplate(meta, 1820367662266433536L, originProjectPath, filterConfig, modelConfig, null);
     }
 
     @Test
@@ -180,6 +180,25 @@ public class TemplateMakerTest {
         TemplateMakerConfig config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
         Long id = TemplateMaker.makeTemplate(config);
         System.out.println(id);
+    }
+
+    @Test
+    public void makeSpringBootInitTemplateTest() {
+        // 第一步：创建基础的 meta.json 文件
+        String rootPath = "example/springboot-init/";
+        String configStr = ResourceUtil.readUtf8Str(rootPath + "templateInitConfig.json");
+        TemplateMakerConfig config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
+        Long id = TemplateMaker.makeTemplate(config);
+
+        // 第二步：meta.json 文件中, 可以省略第一步添加的 meta 元信息 和 originProjectPath, 只需要保留 id 值 与 第一步的 json 文件中的 id 值一致即可
+        configStr = ResourceUtil.readUtf8Str(rootPath + "templateInitConfig2.json");
+        config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
+        TemplateMaker.makeTemplate(config);
+
+        // 帖子相关功能
+        configStr = ResourceUtil.readUtf8Str(rootPath + "templateInitConfig3.json");
+        config = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
+        TemplateMaker.makeTemplate(config);
     }
 
 }
